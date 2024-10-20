@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Dika</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; }
+        #game, #result { display: none; }
+        button { margin-top: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <div id="welcome">
+        <h1>Selamat datang di game Dika</h1>
+        <button onclick="startGame()">Mulai</button>
+    </div>
+
+    <div id="game">
+        <h2 id="question"></h2>
+        <div id="answers"></div>
+        <button onclick="nextQuestion()">Lanjut</button>
+    </div>
+
+    <div id="result">
+        <h2>Skor Akhir: <span id="score"></span></h2>
+        <button onclick="startGame()">Main Lagi</button>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Apa itu algoritma dalam Python?", answers: ["Proses penyelesaian masalah", "Bahasa pemrograman"], correct: 0 },
+            { question: "Siapa yang mengembangkan Python?", answers: ["Guido van Rossum", "Elon Musk"], correct: 0 },
+            { question: "Apa tujuan dari akuntansi dasar?", answers: ["Mengatur laporan keuangan", "Membuat aplikasi"], correct: 0 },
+            { question: "Apa singkatan dari PAI?", answers: ["Pendidikan Agama Islam", "Pendidikan Alam Indonesia"], correct: 0 },
+            { question: "Apa fungsi utama dari pengantar teknologi?", answers: ["Memahami dasar teknologi", "Menjadi ahli komputer"], correct: 0 }
+        ];
+
+        let score = 0;
+        let currentQuestion = 0;
+
+        function startGame() {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            score = 0;
+            currentQuestion = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionElement = document.getElementById('question');
+            const answersElement = document.getElementById('answers');
+            const questionData = questions[Math.floor(Math.random() * questions.length)];
+            questionElement.textContent = questionData.question;
+            answersElement.innerHTML = '';
+            questionData.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = answer;
+                btn.onclick = () => checkAnswer(index === questionData.correct);
+                answersElement.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(isCorrect) {
+            if (isCorrect) {
+                score++;
+            }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('score').textContent = score;
+        }
+    </script>
+</body>
+  </html>
